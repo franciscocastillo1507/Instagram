@@ -78,4 +78,8 @@ class Provider extends AbstractProvider
 
         return $this->parseAccessToken($response->getBody());
     }
+    public function fetchUserByToken($token)
+    {
+        return $this->getUserByToken($token);
+    }
 }
