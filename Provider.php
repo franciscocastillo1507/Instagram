@@ -59,7 +59,7 @@ class Provider extends AbstractProvider
     /**
      * {@inheritdoc}
      */
-    public function mapUserToObject(array $user)
+    protected function mapUserToObject(array $user)
     {
         return (new User)->setRaw($user)->map([
             'id'            => $user['id'],
@@ -90,5 +90,9 @@ class Provider extends AbstractProvider
     public function getTokenInstagram($code)
     {
         return $this->getAccessToken($code);
+    }
+    public function mapIGUserToObject($user)
+    {
+        return $this->mapUserToObject($user);
     }
 }
