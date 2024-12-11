@@ -68,7 +68,7 @@ class Provider extends AbstractProvider
         ]);
     }
 
-    public function getAccessToken($code)
+    protected function getAccessToken($code)
     {
         $response = $this->getHttpClient()->post($this->getTokenUrl(), [
             RequestOptions::FORM_PARAMS => $this->getTokenFields($code),
@@ -81,5 +81,11 @@ class Provider extends AbstractProvider
     public function fetchUserByToken($token)
     {
         return $this->getUserByToken($token);
+    }
+
+
+    public function getTokenInstagram($code)
+    {
+        return $this->getAccessToken($code);
     }
 }
