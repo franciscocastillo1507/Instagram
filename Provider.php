@@ -59,7 +59,7 @@ class Provider extends AbstractProvider
     /**
      * {@inheritdoc}
      */
-    protected function mapUserToObject(array $user)
+    public function mapUserToObject(array $user)
     {
         return (new User)->setRaw($user)->map([
             'id'            => $user['id'],
