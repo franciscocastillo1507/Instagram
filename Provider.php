@@ -74,9 +74,11 @@ class Provider extends AbstractProvider
             RequestOptions::FORM_PARAMS => $this->getTokenFields($code),
         ]);
 
-        $this->credentialsResponseBody = json_decode((string) $response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
+        
+        $this->credentialsResponseBody = $body;
 
-        return $this->parseAccessToken($this->credentialsResponseBody);
+        return $this->parseAccessToken($body);
     }
     public function fetchUserByToken($token)
     {
