@@ -19,7 +19,8 @@ class Provider extends AbstractProvider
      */
     protected $fields = ['account_type', 'id', 'username', 'media_count'];
 
-    protected $scopes = ['instagram_business_basic', 'instagram_business_content_publish' , 'instagram_business_manage_messages', 'instagram_business_manage_comments'];
+    protected $scopes = ['instagram_business_basic'];
+    // , 'instagram_business_content_publish' , 'instagram_business_manage_messages', 'instagram_business_manage_comments'];
 
     protected function getAuthUrl($state): string
     {
