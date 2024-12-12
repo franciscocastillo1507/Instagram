@@ -20,11 +20,33 @@ class Provider extends AbstractProvider
     protected $fields = ['account_type', 'id', 'username', 'media_count'];
 
     protected $scopes = ['instagram_business_basic'];
-    // , 'instagram_business_content_publish' , 'instagram_business_manage_messages', 'instagram_business_manage_comments'];
+
+
+    // Store custom parameters
+    protected $customParameters = [];
+    /**
+     * Set the custom parameters for the request.
+     *
+     * @param  array  $parameters
+     * @return $this
+     */
+    public function with(array $parameters)
+    {
+        $this->customParameters = $parameters;
+        return $this;
+    }
 
     protected function getAuthUrl($state): string
     {
-        return $this->buildAuthUrlFromBase('https://api.instagram.com/oauth/authorize', $state);
+        // Build the base URL for Instagram OAuth
+        $url = $this->buildAuthUrlFromBase('https://api.instagram.com/oauth/authorize', $state);
+        
+        // Append custom parameters to the URL
+        if (!empty($this->customParameters)) {
+            $url .= '&' . http_build_query($this->customParameters);
+        }
+
+        return $url;
     }
 
     protected function getTokenUrl(): string
@@ -90,9 +112,5 @@ class Provider extends AbstractProvider
     public function getTokenInstagram($code)
     {
         return $this->getAccessToken($code);
-    }
-    public function mapIGUserToObject($user)
-    {
-        return $this->mapUserToObject($user);
     }
 }
