@@ -103,6 +103,26 @@ class Provider extends AbstractProvider
 
         return $this->parseAccessToken($body);
     }
+
+    protected function getLongLivedAccessToken(string $shortLivedToken): array
+    {
+        $response = $this->getHttpClient()->get('https://graph.instagram.com/access_token', [
+            RequestOptions::QUERY => [
+                'grant_type'    => 'ig_exchange_token',
+                'client_secret' => $this->clientSecret,
+                'access_token'  => $shortLivedToken,
+            ],
+        ]);
+    
+        $body = json_decode((string) $response->getBody(), true);
+    
+        if (isset($body['access_token'])) {
+            return $body;
+        }
+    
+        throw new \Exception('Unable to fetch long-lived access token: ' . ($body['error']['message'] ?? 'Unknown error'));
+    }
+    
     public function fetchUserByToken($token)
     {
         return $this->getUserByToken($token);
@@ -112,5 +132,10 @@ class Provider extends AbstractProvider
     public function getTokenInstagram($code)
     {
         return $this->getAccessToken($code);
+    }
+
+    public function fetchLongLivedAccessToken(string $shortLivedToken): array
+    {
+        return $this->getLongLivedAccessToken($shortLivedToken);
     }
 }
